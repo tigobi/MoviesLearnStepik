@@ -15,4 +15,11 @@ public class MovieResponse {
     public MovieResponse(List<Movie> movies) {
         this.movies = movies;
     }
+
+    @Override
+    public String toString() {
+        return "MovieResponse{" +
+                "movies=" + movies +
+                '}';
+    }
 }

@@ -3,13 +3,13 @@ package com.example.movies;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
@@ -23,12 +23,15 @@ public class MovieDetailActivity extends AppCompatActivity {
     private ImageView imageViewPoster;
     private TextView textViewYear;
     private TextView textViewDescription;
+    private RecyclerView recyclerViewTrailers;
+    private TrailersAdapter trailersAdapter;
 
     private void initViews() {
         textViewTitle = findViewById(R.id.textViewTitle);
         imageViewPoster = findViewById(R.id.imageViewPoster);
         textViewYear = findViewById(R.id.textViewYear);
         textViewDescription = findViewById(R.id.textViewDescription);
+        recyclerViewTrailers = findViewById(R.id.recyclerViewTrailers);
     }
 
     @Override
@@ -38,6 +41,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
         initViews();
         Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
+        trailersAdapter = new TrailersAdapter();
+        recyclerViewTrailers.setAdapter(trailersAdapter);
 
         Glide.with(this)
                 .load(movie.getPoster().getUrl())
@@ -49,7 +54,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         viewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
             @Override
             public void onChanged(List<Trailer> trailers) {
-                Log.d(TAG, "GET TRAILERS ");
+                trailersAdapter.setTrailers(trailers);
             }
         });
     }

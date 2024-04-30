@@ -31,7 +31,7 @@ public class MovieDetailViewModel extends AndroidViewModel {
         return trailers;
     }
 
-    public void LoadReviews(int id) {
+    public void loadReviews(int id) {
         Disposable disposable = ApiFactory.apiService.loadReviews(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

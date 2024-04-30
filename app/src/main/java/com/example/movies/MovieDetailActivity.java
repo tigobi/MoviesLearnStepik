@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,8 +66,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                 intent.setData(Uri.parse(trailer.getUrl()));
             }
         });
-        viewModel.getReviews().observe(this,;
-
+        viewModel.getReviews().observe(this, new Observer<List<Review>>() {
+            @Override
+            public void onChanged(List<Review> reviewList) {
+                Log.d(TAG, reviewList.toString());
+            }
+        });
+        viewModel.loadReviews(movie.getId());
     }
 
     public static Intent newIntent(Context context, Movie movie) {

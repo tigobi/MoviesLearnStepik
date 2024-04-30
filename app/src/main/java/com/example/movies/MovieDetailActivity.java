@@ -65,6 +65,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                 intent.setData(Uri.parse(trailer.getUrl()));
             }
         });
+        viewModel.getReviews().observe(this,;
+
     }
 
     public static Intent newIntent(Context context, Movie movie) {

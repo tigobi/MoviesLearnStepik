@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,7 +25,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView textViewYear;
     private TextView textViewDescription;
     private RecyclerView recyclerViewTrailers;
+    private RecyclerView recyclerViewReviews;
     private TrailersAdapter trailersAdapter;
+    private ReviewsAdapter reviewsAdapter;
 
     private void initViews() {
         textViewTitle = findViewById(R.id.textViewTitle);
@@ -34,6 +35,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewYear = findViewById(R.id.textViewYear);
         textViewDescription = findViewById(R.id.textViewDescription);
         recyclerViewTrailers = findViewById(R.id.recyclerViewTrailers);
+        recyclerViewReviews = findViewById(R.id.recyclerViewReviews);
     }
 
     @Override
@@ -44,6 +46,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         initViews();
         Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
         trailersAdapter = new TrailersAdapter();
+        reviewsAdapter = new ReviewsAdapter();
+        recyclerViewReviews.setAdapter(reviewsAdapter);
         recyclerViewTrailers.setAdapter(trailersAdapter);
 
         Glide.with(this)
@@ -69,7 +73,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         viewModel.getReviews().observe(this, new Observer<List<Review>>() {
             @Override
             public void onChanged(List<Review> reviewList) {
-                Log.d(TAG, reviewList.toString());
+                reviewsAdapter.setReviews(reviewList);
             }
         });
         viewModel.loadReviews(movie.getId());
